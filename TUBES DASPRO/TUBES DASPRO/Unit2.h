@@ -1,0 +1,246 @@
+//---------------------------------------------------------------------------
+
+#ifndef Unit2H
+#define Unit2H
+//---------------------------------------------------------------------------
+#include <Classes.hpp>
+#include <Controls.hpp>
+#include <StdCtrls.hpp>
+#include <Forms.hpp>
+#include <ComCtrls.hpp>
+#include <ExtCtrls.hpp>
+#include <jpeg.hpp>
+#include <Buttons.hpp>
+//---------------------------------------------------------------------------
+class TForm2 : public TForm
+{
+__published:	// IDE-managed Components
+        TGroupBox *GroupBox1;
+        TLabel *Label1;
+        TGroupBox *GroupBox2;
+        TGroupBox *GroupBox4;
+        TEdit *Edit1;
+        TLabel *Label3;
+        TLabel *Label4;
+        TButton *Button1;
+        TGroupBox *GroupBox5;
+        TComboBox *ComboBox1;
+        TComboBox *ComboBox2;
+        TComboBox *ComboBox3;
+        TButton *Button2;
+        TButton *Button3;
+        TButton *Button4;
+        TButton *Button5;
+        TLabel *Label5;
+        TLabel *Label6;
+        TLabel *Label7;
+        TImage *Image1;
+        TImage *Image2;
+        TImage *Image3;
+        TImage *Image5;
+        TButton *Button6;
+        TButton *Button7;
+        TGroupBox *GroupBox6;
+        TGroupBox *GroupBox7;
+        TEdit *Edit2;
+        TEdit *Edit3;
+        TLabel *Label8;
+        TLabel *Label9;
+        TButton *Button8;
+        TEdit *Edit4;
+        TLabel *Label10;
+        TButton *Button9;
+        TGroupBox *GroupBox8;
+        TLabel *Label11;
+        TListBox *ListBox3;
+        TButton *Button10;
+        TButton *Button11;
+        TGroupBox *GroupBox9;
+        TListBox *ListBox4;
+        TComboBox *ComboBox4;
+        TButton *Button12;
+        TLabel *Label12;
+        TListBox *ListBox5;
+        TListBox *ListBox6;
+        TListBox *ListBox7;
+        TListBox *ListBox8;
+        TLabel *Label13;
+        TListBox *ListBox9;
+        TListBox *ListBox10;
+        TListBox *ListBox11;
+        TListBox *ListBox12;
+        TListBox *ListBox13;
+        TListBox *ListBox14;
+        TLabel *Label24;
+        TEdit *Edit5;
+        TLabel *Label25;
+        TLabel *Label26;
+        TEdit *Edit6;
+        TButton *Button13;
+        TButton *Button14;
+        TGroupBox *GroupBox10;
+        TListBox *ListBox15;
+        TDateTimePicker *DateTimePicker1;
+        TLabel *Label2;
+        TButton *Button15;
+        TLabel *Label27;
+        TButton *Button16;
+        TGroupBox *GroupBox3;
+        TGroupBox *GroupBox12;
+        TEdit *Edit7;
+        TEdit *Edit8;
+        TEdit *Edit9;
+        TEdit *Edit10;
+        TEdit *Edit11;
+        TEdit *Edit12;
+        TLabel *Label28;
+        TLabel *Label29;
+        TLabel *Label30;
+        TLabel *Label31;
+        TEdit *Edit13;
+        TEdit *Edit14;
+        TEdit *Edit15;
+        TEdit *Edit16;
+        TEdit *Edit17;
+        TEdit *Edit18;
+        TLabel *Label32;
+        TLabel *Label33;
+        TLabel *Label34;
+        TLabel *Label35;
+        TLabel *Label36;
+        TEdit *Edit19;
+        TLabel *Label37;
+        TButton *Button17;
+        TEdit *Edit20;
+        TLabel *Label38;
+        TEdit *Edit21;
+        TLabel *Label39;
+        TEdit *Edit22;
+        TEdit *Edit23;
+        TEdit *Edit24;
+        TEdit *Edit25;
+        TLabel *Label40;
+        TLabel *Label41;
+        TLabel *Label42;
+        TLabel *Label43;
+        TEdit *Edit26;
+        TEdit *Edit27;
+        TEdit *Edit28;
+        TEdit *Edit29;
+        TEdit *Edit30;
+        TEdit *Edit31;
+        TEdit *Edit32;
+        TLabel *Label44;
+        TLabel *Label45;
+        TLabel *Label46;
+        TLabel *Label47;
+        TComboBox *ComboBox5;
+        TLabel *Label49;
+        TEdit *Edit33;
+        TLabel *Label50;
+        TButton *Button18;
+        TEdit *Edit34;
+        TGroupBox *GroupBox11;
+        TGroupBox *GroupBox13;
+        TGroupBox *GroupBox14;
+        TGroupBox *GroupBox15;
+        TGroupBox *GroupBox16;
+        TGroupBox *GroupBox17;
+        TGroupBox *GroupBox18;
+        TLabel *Label14;
+        TLabel *Label15;
+        TLabel *Label16;
+        TLabel *Label17;
+        TLabel *Label18;
+        TLabel *Label19;
+        TGroupBox *GroupBox19;
+        TLabel *Label20;
+        TGroupBox *GroupBox20;
+        TLabel *Label21;
+        TGroupBox *GroupBox21;
+        TLabel *Label22;
+        TLabel *Label51;
+        TLabel *Label52;
+        TLabel *Label53;
+        TListBox *ListBox1;
+        TListBox *ListBox2;
+        TListBox *ListBox16;
+        TListBox *ListBox17;
+        TListBox *ListBox18;
+        TListBox *ListBox19;
+        TListBox *ListBox20;
+        TListBox *ListBox21;
+        TListBox *ListBox22;
+        TListBox *ListBox23;
+        TListBox *ListBox24;
+        TEdit *Edit35;
+        TButton *Button19;
+        TButton *Button20;
+        TGroupBox *GroupBox22;
+        TListBox *ListBox25;
+        TButton *Button21;
+        TComboBox *ComboBox6;
+        TButton *Button23;
+        TEdit *Edit36;
+        TGroupBox *GroupBox23;
+        TGroupBox *GroupBox24;
+        TLabel *Label54;
+        TGroupBox *GroupBox25;
+        TLabel *Label55;
+        TGroupBox *GroupBox26;
+        TLabel *Label56;
+        TGroupBox *GroupBox27;
+        TLabel *Label57;
+        TGroupBox *GroupBox28;
+        TLabel *Label58;
+        TGroupBox *GroupBox29;
+        TLabel *Label59;
+        TGroupBox *GroupBox30;
+        TLabel *Label60;
+        TGroupBox *GroupBox31;
+        TLabel *Label61;
+        TGroupBox *GroupBox32;
+        TLabel *Label62;
+        TGroupBox *GroupBox33;
+        TLabel *Label23;
+        TLabel *Label63;
+        TButton *Button24;
+        TButton *Button25;
+        TButton *Button26;
+        TGroupBox *GroupBox34;
+        TListBox *ListBox26;
+        TButton *Button27;
+        TListBox *ListBox27;
+        TBitBtn *BitBtn1;
+        void __fastcall Button1Click(TObject *Sender);
+        void __fastcall Button2Click(TObject *Sender);
+        void __fastcall Button3Click(TObject *Sender);
+        void __fastcall Button4Click(TObject *Sender);
+        void __fastcall Button12Click(TObject *Sender);
+        void __fastcall Button5Click(TObject *Sender);
+        void __fastcall Button7Click(TObject *Sender);
+        void __fastcall Button15Click(TObject *Sender);
+        void __fastcall Button6Click(TObject *Sender);
+        void __fastcall Button16Click(TObject *Sender);
+        void __fastcall Button8Click(TObject *Sender);
+        void __fastcall Button9Click(TObject *Sender);
+        void __fastcall Button10Click(TObject *Sender);
+        void __fastcall Button17Click(TObject *Sender);
+        void __fastcall Button18Click(TObject *Sender);
+        void __fastcall Button11Click(TObject *Sender);
+        void __fastcall Button13Click(TObject *Sender);
+        void __fastcall Button14Click(TObject *Sender);
+        void __fastcall Button24Click(TObject *Sender);
+        void __fastcall Button26Click(TObject *Sender);
+        void __fastcall Button25Click(TObject *Sender);
+        void __fastcall Button27Click(TObject *Sender);
+        void __fastcall BitBtn1Click(TObject *Sender);
+private:	// User declarations
+public:		// User declarations
+        __fastcall TForm2(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm2 *Form2;
+//---------------------------------------------------------------------------
+#endif
+ 

@@ -1,0 +1,1563 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit2.h"
+#include "Unit5.h"
+#include "Unit4.h"
+#include "Unit1.h"
+#include "Unit6.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm2 *Form2;
+//Deklarasi variabel global
+String nama;                                                     //Deklarasi variabel nama
+String nama_pelanggan[50];                                       //Deklarasi nama_pelanggan sebanyak 50
+String tanggal;                                                  //Deklarasi tanggal
+String list_jenis [3] = {"SlingBag","Ransel","Dompet"},jenis;    //Deklarasi data list_jenis sebanyak 3 dan deklarasi jenis
+String list_ukuran [2] = {"Kecil","Besar"},ukuran;               //Deklarasi data list_ukuran sebanyak 2 dan deklarasi ukuran
+String list_warna [2] = {"Ivory","Latte"},warna;                 //Deklarasi data list_warna sebanyak 2 dan deklarasi warna
+int harga[3][2]= {{45000,60000},                                 //Deklarasi harga sebanyak 3x2 data
+                 {85000,100000},
+                 {30000,40000}};
+int jumlah;                                                      //Deklarasi variabel jumlah
+int jumlah_produk[100];                                          //Deklarasi variabel jumlah_produk sebanyak 100
+int total_harga_produk[100];                                     //Deklarasi variabel total_harga_produk sebanyak 100
+String paperbag [2] = {"YA","TIDAK"};                            //Deklarasi pilihan paperbag sebanyak 2
+int hargatam = 10000;                                            //Deklarasi harga tambahan yaitu 10000
+String list[50], list1[50], list2[50], list3[50];                //Deklarasi variabel list, list1, list2, list3 sebanyak 50
+int pilih,pilih1,pilih2,pilih3;                                  //Deklarasi variabel pilih, pilih1, pilih2, pilih3
+int nomor,bayar,a,b,c,i,n,v;                                     //Deklarasi variabel nomor, bayar,a,b,c,i,n,v
+int total_pembayaran[100];                                       //Deklarasi total_pembayaran dalam array sebanyak 100
+int uang_bayar[100];                                             //Deklarasi uang_bayar dalam array sebanyak 100
+int uang_kembalian[100], laba[100], modal;                       //Deklarasi uang kembalian, laba dalam array sebanyak 100 dan deklarasi modal
+
+//---------------------------------------------------------------------------
+__fastcall TForm2::TForm2(TComponent* Owner)
+        : TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button1Click(TObject *Sender)               //Input data pelanggan
+{
+nama = Edit1->Text;
+
+        if (nama=="")                                               //Jika nama kosong
+        {
+        ShowMessage ("Anda lupa menginputkan nama");                //Maka akan muncul pesan "Anda lupa menginputkan nama"
+        Edit1->Enabled = true;                                      //Edit1 diaktifkan
+        DateTimePicker1->Enabled = true;                            //DateTimePicker1 diaktifkan
+        Button1->Enabled = true;                                    //Button1 diaktifkan
+        Edit1->SetFocus();                                          //Kursor diarahkan ke Edit1
+        }
+        else                                                        //sebaliknya
+        {
+        ShowMessage ("Data Tersimpan");                             //Maka akan muncul pesan "Data Tersimpan"
+        Edit1->Enabled = false;                                     //Edit1 dinonaktifkan
+        DateTimePicker1->Enabled = false;                           //DateTimePicker1 dinonaktifkan
+        Button1->Enabled = false;                                   //Button1 dinonaktifkan
+        ComboBox1->SetFocus();                                      //Kursor diarahkan ke ComboBox1
+        }
+
+        tanggal = DateTimePicker1->Date.FormatString("dd.mm.yyyy"); //Untuk tanggal
+
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button2Click(TObject *Sender)               //Input jenis yang dipilih
+{
+pilih=ComboBox1->ItemIndex;                                         //Nilai variabel pilih didapat dari itemindex yang dipilih pada ComboBox1
+String list_jenis [3] = {"SlingBag","Ransel","Dompet"};             //Deklarasi data list jenis sebanyak 3
+ComboBox1->Enabled = false;                                         //ComboBox1 dinonaktifkan
+Button2->Enabled = false;                                           //Button2 dinonaktifkan
+ComboBox2->SetFocus();                                              //Kursor diarahkan pada ComboBox2
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button3Click(TObject *Sender)               //Input ukuran yang dipilih
+{
+pilih1=ComboBox2->ItemIndex;                                        //Nilai variabel pilih1 didapat dari itemindex yang dipilih pada ComboBox2
+String list_ukuran [2] = {"Kecil","Besar"};                         //Deklarasi data list ukuran sebanyak 2
+ComboBox2->Enabled = false;                                         //ComboBox2 dinonaktifkan
+Button3->Enabled = false;                                           //Button3 dinonaktifkan
+ComboBox3->SetFocus();                                              //Kursor diarahkan pada ComboBox3
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button4Click(TObject *Sender)   //Input warna yang dipilih
+{
+pilih2=ComboBox3->ItemIndex;                                       //Nilai variabel pilih2 didapat dari itemindex yang didapat pada ComboBox3
+String list_warna [2] = {"Ivory","Latte"};                         //Deklarasi data list warna sebanyak 2
+ComboBox3->Enabled = false;                                        //ComboBox3 dinonaktifkan
+Button4->Enabled = false;                                          //Button4 dinonaktifkan
+Edit5->SetFocus();                                                 //Kursor diarahkan pada Edit5
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button12Click(TObject *Sender)  //Input pemesanan paperbag
+{
+pilih3=ComboBox4->ItemIndex;                            //Nilai variabel pilih3 didapat dari itemindex yang didapat pada ComboBox4
+String paperbag [2] = {"YA","TIDAK"};                   //Deklarasi data paperbag sebanyak 2
+
+if (ComboBox4->Text == "YA")                            //Jika pilihan Combobox4 adalah YA
+{
+        Edit33->SetFocus();                             //Maka kursor diarahkan ke Edit33 (untuk menginputkan jumlah paperbag)
+}
+else if (ComboBox4->Text == "TIDAK")                    //Sebaliknya jika pilihan ComboBox4 adalah TIDAK
+{
+        Edit33->Text= StrToInt("0");                    //Maka Edit33 berjumlah 0
+}
+ComboBox4->Enabled = false;                             //ComboBox4 dinonaktifkan
+Button12->Enabled = false;                              //Button12 dinonaktifkan
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button5Click(TObject *Sender)       //Menghapus pemesanan
+{
+ComboBox1->ClearSelection();                            //Membersihkan pilihan pada ComboBox1
+ComboBox2->ClearSelection();                            //Membersihkan pilihan pada ComboBox2
+ComboBox3->ClearSelection();                            //Membersihkan pilihan pada ComboBox3
+ComboBox4->ClearSelection();                            //Membersihkan pilihan pada ComboBox4
+Edit5->Clear();                                         //Edit5 dibersihkan
+Edit33->Clear();                                        //Edit33 dibersihkan
+ListBox26->Clear();                                     //ListBox26 dibersihkan
+        ComboBox1->Enabled = true;                      //ComboBox1 dinaktifkan
+        ComboBox2->Enabled = true;                      //ComboBox2 dinaktifkan
+        ComboBox3->Enabled = true;                      //ComboBox3 dinaktifkan
+        ComboBox4->Enabled = true;                      //ComboBox4 dinaktifkan
+        Edit5->Enabled = true;                          //Edit5 diaktifkan
+        Edit33->Enabled = true;                         //Edit33 diaktifkan
+        Button2->Enabled = true;                        //Button2 diaktifkan
+        Button3->Enabled = true;                        //Button3 diaktifkan
+        Button12->Enabled = true;                       //Button12 diaktifkan
+        Button4->Enabled = true;                        //Button4 diaktifkan
+        Button25->Enabled = true;                       //Button25 diaktifkan
+        Button26->Enabled = true;                       //Button26 diaktifkan
+        Button27->Enabled = true;                       //Button27 diaktifkan
+ComboBox1->SetFocus();                                  //Kursor diarahkan pada ComboBox1 (mengulang pemilihan pesanan)
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button7Click(TObject *Sender)   //Membatalkan pemesanan
+{
+Edit1->Clear();                                         //Edit1 dibersihkan
+ComboBox1->ClearSelection();                            //Membersihkan pilihan pada ComboBox1
+ComboBox2->ClearSelection();                            //Membersihkan pilihan pada ComboBox2
+ComboBox3->ClearSelection();                            //Membersihkan pilihan pada ComboBox3
+ComboBox4->ClearSelection();                            //Membersihkan pilihan pada ComboBox4
+Edit5->Clear();                                         //Edit5 dibersihkan
+Edit33->Clear();                                        //Edit33 dibersihkan
+ListBox26->Clear();                                     //ListBox26 dibersihkan
+Edit2->Clear();                                         //Edit2 dibersihkan
+Edit3->Clear();                                         //Edit3 dibersihkan
+Edit4->Clear();                                         //Edit4 diaktifkan
+Edit1->Enabled = true;                                  //Edit1 (kolom nama) diaktifkan (mengulang input nama pelanggan)
+DateTimePicker1->Enabled = true;                        //DateTimePicker1 (tanggal) diaktifkan (mengulang input tanggal pelanggan datang)
+Button1->Enabled = true;                                //Button1 diaktifkan
+        ComboBox1->Enabled = true;                      //ComboBox1 diaktifkan
+        ComboBox2->Enabled = true;                      //ComboBox2 diaktifkan
+        ComboBox3->Enabled = true;                      //ComboBox3 diaktifkan
+        ComboBox4->Enabled = true;                      //ComboBox4 diaktifkan
+        Edit5->Enabled = true;                          //Edit5 diaktifkan
+        Edit33->Enabled = true;                         //Edit33 diaktifkan
+        Button2->Enabled = true;                        //Button2 diaktifkan
+        Button3->Enabled = true;                        //Button3 diaktifkan
+        Button12->Enabled = true;                       //Button12 diaktifkan
+        Button4->Enabled = true;                        //Button4 diaktifkan
+        Button25->Enabled = true;                       //Button25 diaktifkan
+        Button26->Enabled = true;                       //Button26 diaktifkan
+        Button27->Enabled = true;                       //Button27 diaktifkan
+        Button5->Enabled = true;                        //Button5 diaktifkan
+Edit1->SetFocus();                                      //Kursor diarahkan pada Edit1
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button15Click(TObject *Sender)   //rekap penjualan
+{
+        Form2->Hide();        //Form2 disembunyikan
+        Form5->Show();        //Form5 ditampilkan (form rekap penjualan)
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button6Click(TObject *Sender)        //Untuk memproses pemesanan
+{
+Button5->Enabled = false;
+
+        if ((ComboBox1->Text == "SlingBag") && (ComboBox2->Text == "Kecil") && (ComboBox4->Text == "YA"))
+        {
+                total_harga_produk[i]=(harga[0][0]) * StrToInt(Edit5->Text) + (hargatam * StrToInt(Edit33->Text));
+                modal = StrToInt (((Edit5->Text)*30000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "SlingBag") && (ComboBox2->Text == "Kecil") && (ComboBox4->Text =="TIDAK"))
+        {
+                total_harga_produk[i]=(harga[0][0]) * StrToInt(Edit5->Text);
+                modal = StrToInt (((Edit5->Text)*30000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "SlingBag") && (ComboBox2->Text == "Besar") && (ComboBox4->Text =="YA"))
+        {
+                total_harga_produk[i]=(harga[0][1]) * StrToInt(Edit5->Text) + (hargatam * StrToInt(Edit33->Text));
+                modal = StrToInt (((Edit5->Text)*40000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "SlingBag") && (ComboBox2->Text =="Besar") && (ComboBox4->Text == "TIDAK"))
+        {
+                total_harga_produk[i]=(harga[0][1]) * StrToInt(Edit5->Text);
+                modal = StrToInt (((Edit5->Text)*40000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "Ransel") && (ComboBox2->Text == "Kecil") && (ComboBox4->Text == "YA"))
+        {
+                total_harga_produk[i]=(harga[1][0]) * StrToInt(Edit5->Text) + (hargatam * StrToInt(Edit33->Text));
+                modal = StrToInt (((Edit5->Text)*70000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "Ransel") && (ComboBox2->Text == "Kecil") && (ComboBox4->Text == "TIDAK"))
+        {
+                total_harga_produk[i]=(harga[1][0]) * StrToInt(Edit5->Text);
+                modal = StrToInt (((Edit5->Text)*70000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "Ransel") && (ComboBox2->Text == "Besar") && (ComboBox4->Text == "YA"))
+        {
+                total_harga_produk[i]=(harga[1][1]) * StrToInt(Edit5->Text) + (hargatam * StrToInt(Edit33->Text));
+                modal = StrToInt (((Edit5->Text)*80000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "Ransel") && (ComboBox2->Text == "Besar") && (ComboBox4->Text == "TIDAK"))
+        {
+                total_harga_produk[i]=(harga[1][1]) * StrToInt(Edit5->Text);
+                modal = StrToInt (((Edit5->Text)*80000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "Dompet") && (ComboBox2->Text == "Kecil") && (ComboBox4->Text == "YA"))
+        {
+                total_harga_produk[i]=(harga[2][0]) * StrToInt(Edit5->Text) + (hargatam * StrToInt(Edit33->Text));
+                modal = StrToInt (((Edit5->Text)*15000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "Dompet") && (ComboBox2->Text == "Kecil") && (ComboBox4->Text == "TIDAK"))
+        {
+                total_harga_produk[i]=(harga[2][0]) * StrToInt(Edit5->Text);
+                modal = StrToInt (((Edit5->Text)*15000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "Dompet") && (ComboBox2->Text == "Besar") && (ComboBox4->Text == "YA"))
+        {
+                total_harga_produk[i]=(harga[2][1]) * StrToInt(Edit5->Text) + (hargatam * StrToInt(Edit33->Text));
+                modal = StrToInt (((Edit5->Text)*20000) + ((Edit33->Text)*5000));
+        }
+        else if ((ComboBox1->Text == "Dompet") && (ComboBox2->Text == "Besar") && (ComboBox4->Text == "TIDAK"))
+        {
+                total_harga_produk[i]=(harga[2][1]) * StrToInt(Edit5->Text);
+                modal = StrToInt (((Edit5->Text)*20000) + ((Edit33->Text)*5000));
+        }
+
+
+ bayar=total_harga_produk[i];
+ if(bayar>=200000)
+ {
+ Edit2->Text= (bayar) - (bayar * 2/100);
+ Edit3->SetFocus();
+ }
+ else if(bayar<200000)
+ {
+ Edit2->Text=bayar;
+ Edit3->SetFocus();
+ }
+
+if ((ComboBox1->Text == "SlingBag") && (ComboBox2->Text== "Kecil") && (ComboBox3->Text== "Ivory"))
+{
+        if(Edit24->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit24->Text>=Edit5->Text)
+        {
+        Edit24->Text = StrToInt ((Edit24->Text) - (Edit5->Text));
+        }
+        else if(Edit24->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+
+}
+else if ((ComboBox1->Text == "SlingBag") && (ComboBox2->Text== "Besar") && (ComboBox3->Text== "Ivory"))
+{
+       if(Edit25->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit25->Text>=Edit5->Text)
+        {
+        Edit25->Text = StrToInt ((Edit25->Text) - (Edit5->Text));
+        }
+        else if(Edit25->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "SlingBag") && (ComboBox2->Text== "Kecil") && (ComboBox3->Text== "Latte"))
+{
+        if(Edit26->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit26->Text>=Edit5->Text)
+        {
+        Edit26->Text = StrToInt ((Edit26->Text) - (Edit5->Text));
+        }
+        else if(Edit26->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "SlingBag") && (ComboBox2->Text== "Besar") && (ComboBox3->Text== "Latte"))
+{
+        if(Edit27->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit27->Text>=Edit5->Text)
+        {
+        Edit27->Text = StrToInt ((Edit27->Text) - (Edit5->Text));
+        }
+        else if(Edit27->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "Ransel") && (ComboBox2->Text== "Kecil") && (ComboBox3->Text== "Ivory"))
+{
+       if(Edit22->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit22->Text>=Edit5->Text)
+        {
+        Edit22->Text = StrToInt ((Edit22->Text) - (Edit5->Text));
+        }
+        else if(Edit22->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "Ransel") && (ComboBox2->Text== "Besar") && (ComboBox3->Text== "Ivory"))
+{
+        if(Edit23->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit23->Text>=Edit5->Text)
+        {
+        Edit23->Text = StrToInt ((Edit23->Text) - (Edit5->Text));
+        }
+        else if(Edit23->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "Ransel") && (ComboBox2->Text== "Kecil") && (ComboBox3->Text== "Latte"))
+{
+       if(Edit28->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit28->Text>=Edit5->Text)
+        {
+        Edit28->Text = StrToInt ((Edit28->Text) - (Edit5->Text));
+        }
+        else if(Edit28->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "Ransel") && (ComboBox2->Text== "Besar") && (ComboBox3->Text== "Latte"))
+{
+       if(Edit29->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit29->Text>=Edit5->Text)
+        {
+        Edit29->Text = StrToInt ((Edit29->Text) - (Edit5->Text));
+        }
+        else if(Edit29->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "Dompet") && (ComboBox2->Text== "Kecil") && (ComboBox3->Text== "Ivory"))
+{
+        if(Edit20->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit20->Text>=Edit5->Text)
+        {
+        Edit20->Text = StrToInt ((Edit20->Text) - (Edit5->Text));
+        }
+        else if(Edit20->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "Dompet") && (ComboBox2->Text== "Besar") && (ComboBox3->Text== "Ivory"))
+{
+        if(Edit21->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit21->Text>=Edit5->Text)
+        {
+        Edit21->Text = StrToInt ((Edit21->Text) - (Edit5->Text));
+        }
+        else if(Edit21->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "Dompet") && (ComboBox2->Text== "Kecil") && (ComboBox3->Text== "Latte"))
+{
+        if(Edit30->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit30->Text>=Edit5->Text)
+        {
+        Edit30->Text = StrToInt ((Edit30->Text) - (Edit5->Text));
+        }
+        else if(Edit30->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+else if ((ComboBox1->Text == "Dompet") && (ComboBox2->Text== "Besar") && (ComboBox3->Text== "Latte"))
+{
+        if(Edit31->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Habis");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+        else if(Edit31->Text>=Edit5->Text)
+        {
+        Edit31->Text = StrToInt ((Edit31->Text) - (Edit5->Text));
+        }
+        else if(Edit31->Text<Edit5->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("Stok Tidak Cukup");
+        Edit2->Clear();
+        ComboBox1->ClearSelection();
+        ComboBox2->ClearSelection();
+        ComboBox3->ClearSelection();
+        ComboBox4->ClearSelection();
+        Edit5->Clear();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox1->SetFocus();
+        }
+}
+
+
+if (ComboBox4->Text == "YA")
+{
+        if (Edit32->Text == 0)
+        {
+        Edit2->Text=0;
+        ShowMessage("PaperBag habis");
+        Edit2->Clear();
+        ComboBox4->ClearSelection();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox4->Enabled = true;
+        Button12->Enabled = true;
+        Edit33->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox4->SetFocus();
+        }
+        else if (Edit32->Text<Edit33->Text)
+        {
+        Edit2->Text=0;
+        ShowMessage("PaperBag Tidak Cukup");
+        Edit2->Clear();
+        ComboBox4->ClearSelection();
+        Edit33->Clear();
+        ListBox26->Clear();
+        ComboBox4->Enabled = true;
+        Button12->Enabled = true;
+        Edit33->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        Button5->Enabled = true;
+        ComboBox4->SetFocus();
+        }
+        else if (Edit32->Text>=Edit33->Text)
+        {
+        Edit32->Text = StrToInt ((Edit32->Text) - (Edit33->Text));
+        }
+}
+else if (ComboBox4->Text == "TIDAK")
+{
+        Edit32->Text = StrToInt ((Edit32->Text) - (0));
+}
+
+}
+//-----------------------------------------------------------------------
+
+void __fastcall TForm2::Button16Click(TObject *Sender)
+{
+        Form2->Hide();
+        Form4->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button8Click(TObject *Sender)   //Menampilkan uang kembalian
+{
+int totalbayar=StrToInt(Edit2->Text);                   //Edit2 menampilkan total pembayaran
+int bayar=StrToInt(Edit3->Text);                        //Edit3 untuk menginputkan uang yang akan dibayarkan
+uang_bayar[n]=bayar;                                    //Variabel uang bayar dalam array adalah variabel bayar
+total_pembayaran[n]=totalbayar;                         //Variabel total_pembayaran dalam array adalah variabel totalbayar
+n++;                                                    //Variabel n akan terus bertambah
+
+                c=c+totalbayar;                         //Variabel c adalah total pendapatan yang akan terus bertambah setiap pemesanan
+                Edit36->Text = StrToInt (c);            //Edit36 merupakan kolom total pendapatan
+                Form5->Edit4->Text = StrToInt (c);      //Menampilkan total pendapatan pada edit4 di form5
+
+        if(bayar<totalbayar)                            //Jika uang yang dibayarkan kurang dari total bayar
+        {
+        ShowMessage("Uang anda tidak cukup");           //Maka akan muncul pesan uang anda tidak cukup
+        Edit3->Clear();                                 //Edit3 dibersihkan
+        Edit3->SetFocus();                              //Kursor diarahkan
+        }
+        else
+        {
+                for (int i=0; i<n; i++)
+                {
+                uang_kembalian[i]=uang_bayar[i]-total_pembayaran[i];    //uang yang dibayarkan kurang total pembayaran
+
+                Edit4->Text=uang_kembalian[i];                          //menampilkan jumlah kembalian
+                }
+        }
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button9Click(TObject *Sender)           //MENCETAK STRUK PEMBAYARAN DAN MENYIMPAN RIWAYAT TRANSAKSI
+{
+
+ListBox3->Items->Add("");
+ListBox3->Items->Add("             STRUK PEMBAYARAN");
+ListBox3->Items->Add("                    Defa Crochet");
+ListBox3->Items->Add("               Padang, Indonesia");
+ListBox3->Items->Add("======================================");
+ListBox3->Items->Add(" Nama Pelanggan : " + Edit1->Text);                       //Menampilkan pada struk pembayaran nama pelanggan yang diinputkan dari edit1
+ListBox3->Items->Add(" Tanggal : " + tanggal);                                  //Menampilkan pada struk pembayaran tanggal pemesana yang diinputkan dari variabel tanggal
+ListBox3->Items->Add("------------------------------------------------------------");
+
+if(pilih==0)                                    //jika jenis produk adalah slingbag
+ {
+        jenis=list_jenis[0];                    //pilihan jenis adalah slingbag
+ }
+else if(pilih==1)                               //jika jenis produk adalah ransel
+ {
+        jenis=list_jenis[1];                    //pilihan jenis adalah ransel
+ }
+else if(pilih==2)                               //jika jenis produk adalah dompet
+ {
+        jenis=list_jenis[2];                    //pilihan jenis adalah dompet
+ }
+
+ListBox3->Items->Add(" Jenis : " + jenis);      //Menampilkan pada struk pembayaran pilihan jenis
+
+if(pilih1==0)                                   //jika ukuran produk adalah kecil
+ {
+        ukuran=list_ukuran[0];                  //pilihan ukuran adalah kecil
+ }
+else if(pilih1==1)                              //jika ukuran produk adalah besar
+ {
+        ukuran=list_ukuran[1];                  //pilihan ukuran adalah besar
+ }
+
+ListBox3->Items->Add(" Ukuran : " + ukuran);    //Menampilkan pada struk pembayaran pilihan ukuran
+
+if(pilih2==0)                                   //jika warna produk adalah ivory
+ {
+        warna=list_warna[0];                    //pilihan warna adalah ivory
+ }
+else if(pilih2==1)                              //jika warna produk adalah latte
+ {
+        warna=list_warna[1];                    //pilihan warna adalah latte
+ }
+
+ListBox3->Items->Add(" Warna : " + warna);                      //Menampilkan pada struk pembayaran pilihan warna
+ListBox3->Items->Add(" Jumlah Pesanan : " + Edit5->Text);       //Menampilkan pada struk pembayaran jumlah pesanan yang diinputkan dari edit5
+
+
+if(pilih3==0)                                                  //jika paperbag ya
+ {
+ ListBox3->Items->Add(" Pakai Paperbag");                      //Menampilkan pada struk pembayaran "pakai paperbag"
+ ListBox3->Items->Add(" Jumlah Paperbag : " + Edit33->Text);   //Menampilkan pada struk pembayaran jumlah paperbag
+ }
+else if(pilih3==1)                                             //jika paperbag tidak
+ {
+ListBox3->Items->Add(" Tidak Pakai Paperbag");                 //Menampilkan pada struk pembayaran "tidak pakai paperbag"
+}
+
+
+ListBox3->Items->Add("======================================");
+ListBox3->Items->Add(" Total Pembayaran : Rp" + Edit2->Text);   //Menampilkan pada struk pembayaran total pembayaran yang diinputkan dari edit2
+ListBox3->Items->Add("");
+ListBox3->Items->Add(" Bayar Tunai : Rp" + Edit3->Text);        //Menampilkan pada struk pembayaran bayar tunai yang diinputkan dari edit3
+ListBox3->Items->Add("");
+ListBox3->Items->Add(" Kembalian : Rp" + Edit4->Text);          //Menampilkan pada struk pembayaran kembalian hasil dari edit4
+ListBox3->Items->Add("======================================");
+ListBox3->Items->Add("");
+ListBox3->Items->Add("                    TERIMA KASIH");
+
+Edit2->Enabled = false;        //Edit2 dinonaktifkan
+Edit3->Enabled = false;        //Edit3 dinonaktifkan
+Button8->Enabled = false;      //Button8 dinonaktifkan
+Edit4->Enabled = false;        //Edit4 dinonaktifkan
+Button9->Enabled = false;      //Button9 dinonaktifkan
+
+//Menyimpan data ke dalam riwayat transaksi
+
+nomor=nomor+1;                      //Variabel nomor yang akan berurut
+ListBox1->Items->Add(nomor);        //Menampilkan pada riwayat nomor pemesanan
+Form5->ListBox10->Items->Add(nomor);//Menampilkan pada riwayat nomor pemesanan pada form5(rekap penjualan)
+String nama=Edit1->Text;            //Edit1 digunakan untuk input nilai variabel nama (nama pelanggan)
+String pilih=ComboBox1->Text;       //ComboBox1 digunakan untuk input nilai variabel pilih (jenis produk)
+String pilih1=ComboBox2->Text;      //ComboBox2 digunakan untuk input nilai variabel pilih1 (ukuran produk)
+String pilih2=ComboBox3->Text;      //ComboBox3 digunakan untuk input nilai variabel pilih2 (warna produk)
+int jumpb=StrToInt(Edit33->Text);   //Edit33 digunakan untuk input nilai variabel jumpb (jumlah paperbag)
+int jumpro=StrToInt(Edit5->Text);   //Edit5 digunakan untuk input nilai variabel jumpro (jumlah produk)
+int totbar=StrToInt(Edit2->Text);   //Edit2 digunakan untuk input nilai variabel totbar (total pembayaran)
+int ubar=StrToInt(Edit3->Text);     //Edit3 digunakan untuk input nilai variabel ubar (bayar tunai/uang bayar)
+int kem=StrToInt(Edit4->Text);      //Edit4 digunakan untuk input nilai variabel kem (uang kembalian)
+
+//Penyimpanan ke dalam array
+
+nama_pelanggan[a]= nama;                //Nilai variabel nama disimpan dalam array nama_pelanggan [a]
+list[a]=pilih;                          //Nilai variabel pilih disimpan dalam array list [a]
+list1[a]=pilih1;                        //Nilai variabel pilih1 disimpan dalam array list1 [a]
+list2[a]=pilih2;                        //Nilai variabel pilih2 disimpan dalam array list2 [a]
+list3[a]=jumpb;                         //Nilai variabel jumpb disimpan dalam array list3 [a]
+jumlah_produk[a]=jumpro;                //Nilai variabel jumpro disimpan dalam array jumlah_produk [a]
+total_pembayaran[a]=totbar;             //Nilai variabel totbar disimpan dalam array total_pembayaran [a]
+uang_bayar[a]=ubar;                     //Nilai variabel ubar disimpan dalam array uang_kembalian [a]
+uang_kembalian[a]=kem;                  //Nilai variabel kem disimpan dalam array uang_kembalian [a]
+laba[a]= modal;                         //Nilai variabel modal disimpan dalam array laba [a]
+a++;
+
+v=v+modal;                              //Variabel v adalah total modal yang akan terus bertambah setiap pemesanan
+Form5->Edit5->Text = StrToInt(v);       //Menampilkan total modal pada edit5 di form5
+
+ListBox2->Clear();
+ListBox16->Clear();
+ListBox17->Clear();
+ListBox18->Clear();
+ListBox19->Clear();
+ListBox20->Clear();
+ListBox21->Clear();
+ListBox22->Clear();
+ListBox23->Clear();
+ListBox24->Clear();
+Form5->ListBox11->Clear();
+Form5->ListBox15->Clear();
+Form5->ListBox17->Clear();
+Form5->ListBox13->Clear();
+Form5->ListBox12->Clear();
+Form5->ListBox16->Clear();
+Form5->ListBox14->Clear();
+Form5->ListBox18->Clear();
+
+for(int b=0;b<a;b++)
+        {
+        ListBox2->Items->Add(nama_pelanggan[b]);
+        ListBox16->Items->Add(tanggal);
+        ListBox17->Items->Add(list[b]);
+        ListBox18->Items->Add(list1[b]);
+        ListBox19->Items->Add(list2[b]);
+        ListBox20->Items->Add(IntToStr(jumlah_produk[b]));
+        ListBox21->Items->Add(list3[b]);
+        ListBox22->Items->Add("Rp"+IntToStr(total_pembayaran[b]));
+        ListBox23->Items->Add("Rp"+IntToStr(uang_bayar[b]));
+        ListBox24->Items->Add("Rp"+IntToStr(uang_kembalian[b]));
+        Form5->ListBox11->Items->Add(nama_pelanggan[b]);
+        Form5->ListBox15->Items->Add(list[b]);
+        Form5->ListBox17->Items->Add(list1[b]);
+        Form5->ListBox13->Items->Add(list2[b]);
+        Form5->ListBox12->Items->Add(IntToStr(jumlah_produk[b]));
+        Form5->ListBox16->Items->Add(list3[b]);
+        Form5->ListBox14->Items->Add(IntToStr(total_pembayaran[b]));
+        Form5->ListBox18->Items->Add(total_pembayaran[b]-laba[b]);
+        }
+
+Form5->Edit6->Text = StrToInt (c-v);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button10Click(TObject *Sender)    //pesan lagi
+{
+        Edit5->Clear();                 //Edit5 dibersihkan
+        Edit2->Clear();                 //Edit2 dibersihkan
+        Edit3->Clear();                 //Edit3 dibersihkan
+        Edit4->Clear();                 //Edit4 dibersihkan
+        Edit33->Clear();                //Edit33 dibersihkan
+        ListBox3->Clear();              //ListBox3 dibersihkan
+        ComboBox1->ClearSelection();    //Membersihkan pilihan pada ComboBox1
+        ComboBox2->ClearSelection();    //Membersihkan pilihan pada ComboBox2
+        ComboBox3->ClearSelection();    //Membersihkan pilihan pada ComboBox3
+        ComboBox4->ClearSelection();    //Membersihkan pilihan pada ComboBox4
+        ListBox26->Clear();
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        Edit2->Enabled = true;
+        Edit3->Enabled = true;
+        Button8->Enabled = true;
+        Edit4->Enabled = true;
+        Button9->Enabled = true;
+
+
+        ComboBox1->SetFocus();          //Kursor diarahkan pada ComboBox1
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button17Click(TObject *Sender)
+{
+Edit24->Text = StrToInt (Edit7->Text);
+Edit25->Text = StrToInt (Edit8->Text);
+Edit26->Text = StrToInt (Edit13->Text);
+Edit27->Text = StrToInt (Edit14->Text);
+Edit22->Text = StrToInt (Edit9->Text);
+Edit23->Text = StrToInt (Edit10->Text);
+Edit28->Text = StrToInt (Edit15->Text);
+Edit29->Text = StrToInt (Edit16->Text);
+Edit20->Text = StrToInt (Edit11->Text);
+Edit21->Text = StrToInt (Edit12->Text);
+Edit30->Text = StrToInt (Edit17->Text);
+Edit31->Text = StrToInt (Edit18->Text);
+Edit32->Text = StrToInt (Edit19->Text);
+
+Edit1->SetFocus();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button18Click(TObject *Sender)       //pengurutan
+{
+Edit36->Clear();
+ListBox2->Clear();
+ListBox16->Clear();
+ListBox17->Clear();
+ListBox18->Clear();
+ListBox19->Clear();
+ListBox20->Clear();
+ListBox21->Clear();
+ListBox22->Clear();
+ListBox23->Clear();
+ListBox24->Clear();
+
+if (ComboBox6->Text=="Data Terlama")
+{
+        for(int f=0; f<a; f++)
+        {
+        ListBox2->Items->Add(nama_pelanggan[f]);
+        ListBox16->Items->Add(tanggal);
+        ListBox17->Items->Add(list[f]);
+        ListBox18->Items->Add(list1[f]);
+        ListBox19->Items->Add(list2[f]);
+        ListBox20->Items->Add(IntToStr(jumlah_produk[f]));
+        ListBox21->Items->Add(list3[f]);
+        ListBox22->Items->Add("Rp"+IntToStr(total_pembayaran[f]));
+        ListBox23->Items->Add("Rp"+IntToStr(uang_bayar[f]));
+        ListBox24->Items->Add("Rp"+IntToStr(uang_kembalian[f]));
+        }
+        Edit36->Text = StrToInt (c);
+}
+else if (ComboBox6->Text=="Data Terbaru")
+{
+        for(int d=a-1; d>=0; d--)
+        {
+        ListBox2->Items->Add(nama_pelanggan[d]);
+        ListBox16->Items->Add(tanggal);
+        ListBox17->Items->Add(list[d]);
+        ListBox18->Items->Add(list1[d]);
+        ListBox19->Items->Add(list2[d]);
+        ListBox20->Items->Add(IntToStr(jumlah_produk[d]));
+        ListBox21->Items->Add(list3[d]);
+        ListBox22->Items->Add("Rp"+IntToStr(total_pembayaran[d]));
+        ListBox23->Items->Add("Rp"+IntToStr(uang_bayar[d]));
+        ListBox24->Items->Add("Rp"+IntToStr(uang_kembalian[d]));
+        }
+        Edit36->Text = StrToInt (c);
+}
+
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button11Click(TObject *Sender)     //selesai pesan
+{
+ComboBox1->ClearSelection();
+ComboBox2->ClearSelection();
+ComboBox3->ClearSelection();
+ComboBox4->ClearSelection();
+Edit1->Clear();
+Edit5->Clear();
+Edit33->Clear();
+Edit2->Clear();
+Edit3->Clear();
+Edit4->Clear();
+ListBox3->Clear();
+ListBox26->Clear();
+ShowMessage("Terimakasih Telah Berbelanja di Defa Crochet");          //Menampilkan pesan Terimkasih Telah Berbelanja di Defa Crochet
+        Edit1->Enabled = true;
+        DateTimePicker1->Enabled = true;
+        Button1->Enabled = true;
+        ComboBox1->Enabled = true;
+        ComboBox2->Enabled = true;
+        ComboBox3->Enabled = true;
+        ComboBox4->Enabled = true;
+        Edit5->Enabled = true;
+        Edit33->Enabled = true;
+        Button2->Enabled = true;
+        Button3->Enabled = true;
+        Button12->Enabled = true;
+        Button4->Enabled = true;
+        Button25->Enabled = true;
+        Button26->Enabled = true;
+        Button27->Enabled = true;
+        Button5->Enabled = true;
+        Edit2->Enabled = true;
+        Edit3->Enabled = true;
+        Button8->Enabled = true;
+        Edit4->Enabled = true;
+        Button9->Enabled = true;
+
+
+Edit1->SetFocus();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button13Click(TObject *Sender)       //cari
+{
+String cari = Edit35->Text;
+bool dapat = 0;
+ListBox25->Clear();
+for(int z=0;z<a;z++ && dapat==0)
+        {
+        if(nama_pelanggan[z]==cari)
+        {
+
+        dapat=1;
+        ListBox25->Items->Add("                                 Defa Crochet      ");
+        ListBox25->Items->Add("                          RIWAYAT PELANGGAN");
+        ListBox25->Items->Add("=====================================================");
+        ListBox25->Items->Add("");
+        ListBox25->Items->Add(" Nama Pelanggan : " + nama_pelanggan[z]);
+        ListBox25->Items->Add(" Tanggal Pemesanan : " + tanggal);
+        ListBox25->Items->Add("");
+        ListBox27->Items->Add("                           DETAIL PESANAN");
+        ListBox27->Items->Add("-----------------------------------------------------");
+        ListBox27->Items->Add(" Jenis Produk : " + list[z]);
+        ListBox27->Items->Add(" Ukuran Produk : " + list1[z]);
+        ListBox27->Items->Add(" Warna Produk : " + list2[z]);
+        ListBox27->Items->Add(" Jumlah Pesanan : " + IntToStr(jumlah_produk[z]));
+        ListBox27->Items->Add(" Paperbag : " + list3[z]);
+        ListBox27->Items->Add(" Total Bayar : " +IntToStr(total_pembayaran[z]));
+        ListBox27->Items->Add(" Uang Bayar : " + IntToStr(uang_bayar[z]));
+        ListBox27->Items->Add(" Kembalian : " + IntToStr(uang_kembalian[z]));
+        ListBox27->Items->Add("");
+        dapat++;
+        }
+       }
+       if(dapat == 1)
+       {
+       ShowMessage("Nama ditemukan");
+       } else if (dapat == 0)
+       {
+       ShowMessage("Nama tidak ditemukan");
+       }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button14Click(TObject *Sender)      //reset
+{
+Edit35->Clear();
+ListBox25->Clear();
+ListBox27->Clear();
+Edit35->SetFocus();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button24Click(TObject *Sender)     //keluar aplikasi
+{
+         Application->Terminate();   //Menutup program
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button26Click(TObject *Sender)    //input jumlah paperbag
+{
+        Edit33->Enabled = false;
+        Button26->Enabled = false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button25Click(TObject *Sender)      //Input jumlah produk
+{
+ Edit5->Enabled = false;
+ Button25->Enabled = false;
+ ComboBox4->SetFocus();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Button27Click(TObject *Sender)      //Input ke list pemesanan
+{
+        ListBox26->Items->Add("----------------------------------------------------------");
+        ListBox26->Items->Add("              Diskon 2%");
+        ListBox26->Items->Add("              Min. Blj Rp200.000");
+        ListBox26->Items->Add("----------------------------------------------------------");
+        ListBox26->Items->Add(" ======LIST PESANAN=======");
+
+ if(pilih==0)
+ {
+        jenis=list_jenis[0];
+ }
+else if(pilih==1)
+ {
+        jenis=list_jenis[1];
+ }
+else if(pilih==2)
+ {
+        jenis=list_jenis[2];
+ }
+
+ListBox26->Items->Add(" Jenis : " + jenis);
+
+if(pilih1==0)
+ {
+        ukuran=list_ukuran[0];
+ }
+else if(pilih1==1)
+ {
+        ukuran=list_ukuran[1];
+ }
+
+ListBox26->Items->Add(" Ukuran : " + ukuran);
+
+if(pilih2==0)
+ {
+        warna=list_warna[0];
+ }
+else if(pilih2==1)
+ {
+        warna=list_warna[1];
+ }
+
+ListBox26->Items->Add(" Warna : " + warna);
+ListBox26->Items->Add(" Jumlah Pesanan : " + Edit5->Text);
+
+if(pilih3==0)
+ {
+ ListBox26->Items->Add(" Pakai Paperbag");
+ ListBox26->Items->Add(" Jumlah Paperbag : " + Edit33->Text);
+ }
+else if(pilih3==1)
+ {
+ListBox26->Items->Add(" Tidak Pakai Paperbag");
+}
+
+Button27->Enabled = false;
+Button5->Enabled = false;
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::BitBtn1Click(TObject *Sender)      //Form Data Diri
+{
+        Form6->Show();       //Menampilkan form6 (data diri)
+}
+//---------------------------------------------------------------------------
+
+
+
+

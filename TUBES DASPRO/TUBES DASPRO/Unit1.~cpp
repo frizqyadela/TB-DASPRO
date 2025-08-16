@@ -1,0 +1,86 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Unit3.h"
+
+AnsiString input1, input2, username="haidefa",password="7777";
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+        : TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+        input1=AnsiString(Edit1->Text);
+        input2=AnsiString(Edit2->Text);
+
+       if (input1==username && input2==password)
+       {
+               ShowMessage("Berhasil Masuk");
+               Form1->Hide();
+               Form3->Show();
+       }
+
+       else if(input1!=username)
+       {
+               ShowMessage("Username salah!");
+               Edit1->Clear();
+               Edit1->SetFocus();
+       }
+       else if (input2!=password)
+       {
+              ShowMessage("Password salah!");
+              Edit2->Clear();
+              Edit1->SetFocus();
+       }
+       else if(input1=="")
+       {
+               ShowMessage("Masukan Username!");      //Maka akan menampilkan pesan "Masukkan Username"
+               Edit1->SetFocus();                     //Kursor diarahkan ke Edit1
+       }
+       else if (input2=="")                           //Jika input2 (password) kosong
+       {
+                ShowMessage("Masukan Password!");     //Maka akan menampilkan pesan "Masukkan Password"
+                Edit1->SetFocus();                    //Kursor diarahkan ke Edit1
+       }
+
+
+       Edit1->Clear();          //Edit1 dibersihkan
+       Edit2->Clear();          //Edit2 Dibersihkan
+}
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TForm1::Button2Click(TObject *Sender)
+{
+        Application->Terminate();   //Menutup aplikasi
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::CheckBox1Click(TObject *Sender)
+{
+if (CheckBox1->Checked) // jika CheckBox sama dengan checked maka
+  {
+ Edit2->PasswordChar = false; // Edit2 PasswordChar akan false
+ }
+ else //sebaliknya
+ {
+ Edit2->PasswordChar = '*';// Edit2 PasswordChar sama dengan "*"
+ }
+}
+//---------------------------------------------------------------------------
+
+
+
+
+
+
